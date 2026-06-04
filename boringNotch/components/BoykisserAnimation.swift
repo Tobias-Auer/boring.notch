@@ -16,6 +16,8 @@ struct BoykisserAnimation: View {
     @State private var breathe: Bool = false
     @State private var sway: Bool = false
     @State private var bob: Bool = false
+    @State private var isBlinking: Bool = false
+    @State private var blinkTask: Task<Void, Never>? = nil
 
     init(height: CGFloat = 20, width: CGFloat = 30) {
         _height = State(initialValue: height)
@@ -23,7 +25,7 @@ struct BoykisserAnimation: View {
     }
 
     var body: some View {
-        Image("boykisser")
+        Image(isBlinking ? "boykisser-blink" : "boykisser")
             .resizable()
             .renderingMode(.original)
             .aspectRatio(contentMode: .fit)
@@ -50,7 +52,38 @@ struct BoykisserAnimation: View {
                 ) {
                     bob = true
                 }
+                startBlinking()
             }
+            .onDisappear {
+                blinkTask?.cancel()
+                blinkTask = nil
+            }
+    }
+
+    private func startBlinking() {
+        blinkTask?.cancel()
+        blinkTask = Task { @MainActor in
+            // Small initial delay so the blink doesn't fire on the first frame.
+            try? await Task.sleep(nanoseconds: UInt64.random(in: 1_500_000_000...3_500_000_000))
+            while !Task.isCancelled {
+                // Single blink: closed eyes for ~140ms
+                isBlinking = true
+                try? await Task.sleep(nanoseconds: 140_000_000)
+                isBlinking = false
+
+                // ~20% chance of a quick double-blink
+                if Bool.random() && Int.random(in: 0...4) == 0 {
+                    try? await Task.sleep(nanoseconds: 120_000_000)
+                    isBlinking = true
+                    try? await Task.sleep(nanoseconds: 130_000_000)
+                    isBlinking = false
+                }
+
+                // Random gap between blinks: 3–6 seconds
+                let gap = UInt64.random(in: 3_000_000_000...6_000_000_000)
+                try? await Task.sleep(nanoseconds: gap)
+            }
+        }
     }
 }
 
