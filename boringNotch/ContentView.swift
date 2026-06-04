@@ -377,7 +377,15 @@ struct ContentView: View {
                 Rectangle()
                     .fill(.black)
                     .frame(width: vm.closedNotchSize.width - 20)
-                MinimalFaceFeatures()
+                switch Defaults[.inactiveAnimationStyle] {
+                case .minimalFace:
+                    MinimalFaceFeatures()
+                case .boykisser:
+                    BoykisserAnimation(
+                        height: max(0, vm.effectiveClosedNotchHeight - 4),
+                        width: max(0, vm.effectiveClosedNotchHeight - 4)
+                    )
+                }
             }
         }.frame(
             height: vm.effectiveClosedNotchHeight,

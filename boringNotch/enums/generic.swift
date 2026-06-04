@@ -67,3 +67,8 @@ enum SliderColorEnum: String, CaseIterable, Defaults.Serializable {
     case albumArt = "Match album art"
     case accent = "Accent color"
 }
+
+enum InactiveAnimationStyle: String, CaseIterable, Defaults.Serializable {
+    case minimalFace = "Minimal face"
+    case boykisser = "Boykisser"
+}

@@ -1164,6 +1164,8 @@ struct Appearance: View {
     @Default(.useMusicVisualizer) var useMusicVisualizer
     @Default(.customVisualizers) var customVisualizers
     @Default(.selectedVisualizer) var selectedVisualizer
+    @Default(.showNotHumanFace) var showNotHumanFace
+    @Default(.inactiveAnimationStyle) var inactiveAnimationStyle
 
     let icons: [String] = ["logo2"]
     @State private var selectedIcon: String = "logo2"
@@ -1390,6 +1392,13 @@ struct Appearance: View {
                 Defaults.Toggle(key: .showNotHumanFace) {
                     Text("Show cool face animation while inactive")
                 }
+                Picker("Inactive animation style", selection: $inactiveAnimationStyle) {
+                    Text("Minimal face")
+                        .tag(InactiveAnimationStyle.minimalFace)
+                    Text("Boykisser")
+                        .tag(InactiveAnimationStyle.boykisser)
+                }
+                .disabled(!showNotHumanFace)
             } header: {
                 HStack {
                     Text("Additional features")

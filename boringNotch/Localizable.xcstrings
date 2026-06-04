@@ -3902,6 +3902,9 @@
         }
       }
     },
+    "Boykisser" : {
+
+    },
     "Calendar" : {
       "localizations" : {
         "ar" : {
@@ -11708,6 +11711,9 @@
         }
       }
     },
+    "Inactive animation style" : {
+
+    },
     "Inline" : {
       "localizations" : {
         "ar" : {
@@ -13708,6 +13714,9 @@
           }
         }
       }
+    },
+    "Minimal face" : {
+
     },
     "Mirror" : {
       "localizations" : {
